@@ -35,8 +35,7 @@ namespace WorkTask.Controllers
         [HttpGet]
         public ActionResult Get([FromQuery] PaginationFilter filter)
         {
-            try
-            {
+
                 var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
                 var AllData = ReservationRep.GetAll()
@@ -56,19 +55,12 @@ namespace WorkTask.Controllers
                 }
                 List<ReservationDTO> Data = mapper.Map<List<ReservationDTO>>(AllData);
                 return Ok(new PagedResponse<List<ReservationDTO>>(Data, validFilter.PageNumber, validFilter.PageSize, totalRecords, TotalPage));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
         }
 
 
         [HttpGet("{ReservationID}")]
         public ActionResult Details(int ReservationID)
         {
-            try
-            {
                 var ReservationDetails = DB.Reservations.Where(T => T.ID == ReservationID).FirstOrDefault();
                 var TripDetails = DB.Trips.Where(T => T.ID == ReservationDetails.TripID).FirstOrDefault();
 
@@ -87,19 +79,12 @@ namespace WorkTask.Controllers
                 };
                 ReservationTripDTO Data = mapper.Map<ReservationTripDTO>(TripReservation);
                 return Ok(Data);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
 
         }
 
         [HttpPost]
         public ActionResult Post(ReservationVM Reservation)
         {
-            try
-            {
                 var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
                 var credentials = Encoding.UTF8.GetString(Convert.FromBase64String(authHeader.Parameter)).Split(':');
                 var username = credentials.FirstOrDefault();
@@ -115,11 +100,6 @@ namespace WorkTask.Controllers
                 };
                 ReservationRep.Create(newReservation);
                 return CreatedAtAction("Get", new { id = newReservation.ID }, ReservationRep.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
 
         }
 
@@ -127,8 +107,6 @@ namespace WorkTask.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, ReservationVM Reservation)
         {
-            try
-            {
                 var found = ReservationRep.GetById(id);
                 if (found != null)
                 {
@@ -148,19 +126,12 @@ namespace WorkTask.Controllers
                 {
                     return NotFound();
                 }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
         }
 
 
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            try
-            {
                 var found = ReservationRep.GetById(id);
                 if (found != null)
                 {
@@ -171,11 +142,6 @@ namespace WorkTask.Controllers
                 {
                     return NotFound();
                 }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
         }
     }
 }

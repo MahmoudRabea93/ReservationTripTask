@@ -32,39 +32,25 @@ namespace WorkTask.Controllers
         [HttpGet]
         public ActionResult Get()
         {
-            try
-            {
                 var TripList = TripRep.GetAll();
                 List<TripDTO> Data = mapper.Map<List<TripDTO>>(TripList);
                 return Ok(Data);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
         }
 
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            try
-            {
+          
                 var TripByID = TripRep.GetById(id);
                 TripDTO Data = mapper.Map<TripDTO>(TripByID);
                 return Ok(Data);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
+           
         }
 
 
         [HttpPost]
         public ActionResult Post(TripVM trip)
         {
-            try
-            {
                 Trip newTrip = new Trip
                 {
                     CityName = trip.CityName,
@@ -77,19 +63,12 @@ namespace WorkTask.Controllers
                 };
                 TripRep.Create(newTrip);
                 return CreatedAtAction("Get", new { id = newTrip.ID }, TripRep.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
         }
 
         // PUT api/<Trip>/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, TripVM trip)
         {
-            try
-            {
                 Trip newTrip = new Trip
                 {
                     CityName = trip.CityName,
@@ -102,26 +81,14 @@ namespace WorkTask.Controllers
                 };
                 TripRep.Modfiy(id, newTrip);
                 return Ok(TripRep.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
         }
 
         // DELETE api/<Trip>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            try
-            {
                 TripRep.Delete(id);
-                return Ok(TripRep.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
+                return Ok(TripRep.GetAll()); 
         }
     }
 }

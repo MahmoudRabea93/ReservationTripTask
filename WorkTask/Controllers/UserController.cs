@@ -33,60 +33,33 @@ namespace WorkTask.Controllers
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            try
-            {
-                UserDTO Data = mapper.Map<UserDTO>(UserRep.GetById(id));
-                return Ok(UserRep.GetById(id));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
+            UserDTO Data = mapper.Map<UserDTO>(UserRep.GetById(id));
+            return Ok(UserRep.GetById(id));
         }
 
         // POST api/<UserController>
         [HttpPost]
         public ActionResult Post(User user)
         {
-            try
-            {
-                UserRep.Create(user);
-                return CreatedAtAction("Get", new { id = user.ID }, UserRep.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
+            UserRep.Create(user);
+            return CreatedAtAction("Get", new { id = user.ID }, UserRep.GetAll());
         }
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, User user)
         {
-            try
-            {
-                UserRep.Modfiy(id, user);
-                return Ok(UserRep.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
+            UserRep.Modfiy(id, user);
+            return Ok(UserRep.GetAll());
+
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            try
-            {
-                UserRep.Delete(id);
-                return Ok(UserRep.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Internal server error :" + ex);
-            }
+            UserRep.Delete(id);
+            return Ok(UserRep.GetAll());
         }
     }
 }
